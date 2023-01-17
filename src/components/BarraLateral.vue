@@ -1,11 +1,29 @@
 <template>
     <header>
         <h1>
-            <img src="../assets/logo.png" alt="">
+            <img src="../assets/logo.png" alt="Alura Tracker">
         </h1>
-        <button class="button" @click="alterarTema">
-        {{ textoBotao }}
-        </button>
+        <div class="has-text-centered">
+          <button class="button" @click="alterarTema">
+          {{ textoBotao }}
+          </button>
+        </div>
+        <nav class="panel mt-5"> <!-- panel com margin top de 5px, o bulma viabiliza a utilização desse mt-5  -->
+          <ul>
+            <li>
+              <router-link to="/" class="link"> <!-- responsável por trabalhar com links no vue.js -->
+                <i class="fa fa-tasks"></i>
+                tarefas
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/projetos" class="link"> <!-- responsável por trabalhar com links no vue.js -->
+                <i class="fa fa-project-diagram"></i>
+                projetos
+              </router-link>
+            </li>
+          </ul>
+        </nav>
     </header>
 </template>
 
@@ -50,5 +68,18 @@ header {
     padding: 2.5rem;
     height: auto;
   }
+}
+
+.panel li {
+    margin: 8px 0;
+}
+.link {
+    color: #fff;
+}
+.link:hover {
+    color: #FAF0CA;
+}
+.link.router-link-active {
+    color: #FAF0CA;
 }
 </style>
