@@ -39,8 +39,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import IProjeto from "../interfaces/IProjeto";
+import { computed, defineComponent } from "vue";
+import { useStore } from "@/store";
 
 export default defineComponent({
   // defineComponent é uma função que RECEBE um objeto de configuração
@@ -48,26 +48,39 @@ export default defineComponent({
   data() {
     // estado do componente, é uma função que RETORNA um objeto com o estado do componente
     return {
-      nomeDoProjeto: "",
-      projetos: [] as IProjeto[], // criando um array de projetos do tipo IProjeto[] que tbm é um array
+      nomeDoProjeto: ""
+      // projetos: [] as IProjeto[], // criando um array de projetos do tipo IProjeto[] que tbm é um array
     };
   },
   methods: {
     salvar() {
-      const projeto: IProjeto = {
-        nome: this.nomeDoProjeto, // this.nomeDoProjeto está vinculado com o input e vai ser associado a  string nome do IProjeto
-        id: new Date().toISOString(), // toISOString vai servir para simular um id gerado genericamente, vai pegar timestamp contendo hora/seg/min do momento que o projeto foi criado
-      };
-      this.projetos.push(projeto); // adicionando o projeto ao array/lista de projetos
+      /* criando o projeto com a store e a mutation recebendo o nome do projeto vinculado com o input do formulário */
+      this.store.commit('ADICIONA_PROJETO', this.nomeDoProjeto)
       this.nomeDoProjeto = ""; // limpando o input de projeto após a adição do novo projeto na linha acima
+      
+      
+      /* criando o projeto "na mão" */
+      // const projeto: IProjeto = {
+      //   nome: this.nomeDoProjeto, // this.nomeDoProjeto está vinculado com o input e vai ser associado a  string nome do IProjeto
+      //   id: new Date().toISOString(), // toISOString vai servir para simular um id gerado genericamente, vai pegar timestamp contendo hora/seg/min do momento que o projeto foi criado
+      // };
+      // this.projetos.push(projeto); // adicionando o projeto ao array/lista de projetos
     },
   },
+  setup () {
+    // disponibilizando e retornando a store para utilizar no nosso componente
+    const store = useStore()
+    return {
+      store,
+      projetos: computed(() => store.state.projetos)
+    }
+  }
 });
 </script>
 
 <style scoped>
 /* o scoped serve para que as propriedades setadas nesse script
-   style não vaze para outros templates */
+  style não vaze para outros templates */
 .projetos {
   padding: 1.25rem;
 }
