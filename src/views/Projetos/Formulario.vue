@@ -25,6 +25,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
+import { ADICIONA_PROJETO, ALTERA_PROJETO } from "@/store/tipo-mutacoes";
 
 export default defineComponent({
   // defineComponent é uma função que RECEBE um objeto de configuração
@@ -51,12 +52,12 @@ export default defineComponent({
     salvar() {
       /* criando e editando o projeto com a store e a mutation recebendo o nome do projeto vinculado com o input do formulário */
       if(this.id) {
-        this.store.commit('ALTERA_PROJETO', {
+        this.store.commit(ALTERA_PROJETO, {
           id: this.id,
           nome: this.nomeDoProjeto
         })
       } else {
-        this.store.commit('ADICIONA_PROJETO', this.nomeDoProjeto)
+        this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto)
       }
       this.nomeDoProjeto = ""; // limpando o input de projeto após a adição do novo projeto na linha acima
       this.$router.push('/projetos'); 
