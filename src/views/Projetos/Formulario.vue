@@ -25,7 +25,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
-import { ADICIONA_PROJETO, ALTERA_PROJETO } from "@/store/tipo-mutacoes";
+import { ADICIONA_PROJETO, ALTERA_PROJETO, NOTIFICAR } from "@/store/tipo-mutacoes";
+import { TipoNotificacao } from "@/interfaces/INotificacao";
 
 export default defineComponent({
   // defineComponent é uma função que RECEBE um objeto de configuração
@@ -50,7 +51,7 @@ export default defineComponent({
   },
   methods: {
     salvar() {
-      /* criando e editando o projeto com a store e a mutation recebendo o nome do projeto vinculado com o input do formulário */
+      // criando e editando o projeto com a store e a mutation recebendo o nome do projeto vinculado com o input do formulário
       if(this.id) {
         this.store.commit(ALTERA_PROJETO, {
           id: this.id,
@@ -60,6 +61,11 @@ export default defineComponent({
         this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto)
       }
       this.nomeDoProjeto = ""; // limpando o input de projeto após a adição do novo projeto na linha acima
+      this.store.commit(NOTIFICAR, {
+        titulo: 'Novo projeto foi salvo',
+        texto: 'Prontinho ;) seu projeto já está disponível.',
+        tipo:TipoNotificacao.SUCESSO
+      })
       this.$router.push('/projetos'); 
       
     },
