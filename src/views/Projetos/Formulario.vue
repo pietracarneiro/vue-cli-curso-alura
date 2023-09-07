@@ -25,8 +25,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
-import { ADICIONA_PROJETO, ALTERA_PROJETO, NOTIFICAR } from "@/store/tipo-mutacoes";
+import { ADICIONA_PROJETO, ALTERA_PROJETO } from "@/store/tipo-mutacoes";
 import { TipoNotificacao } from "@/interfaces/INotificacao";
+import useNotificador from "@/hooks/notificador"
 
 export default defineComponent({
   // defineComponent é uma função que RECEBE um objeto de configuração
@@ -61,20 +62,17 @@ export default defineComponent({
         this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto)
       }
       this.nomeDoProjeto = ""; // limpando o input de projeto após a adição do novo projeto na linha acima
-      this.store.commit(NOTIFICAR, {
-        titulo: 'Novo projeto foi salvo',
-        texto: 'Prontinho ;) seu projeto já está disponível.',
-        tipo:TipoNotificacao.SUCESSO
-      })
+      this.notificar(TipoNotificacao.SUCESSO, 'Excelente', 'O projeto foi cadastro com sucesso!')
       this.$router.push('/projetos'); 
-      
-    },
+    }
   },
   setup () {
     // disponibilizando e retornando a store para utilizar no nosso componente
     const store = useStore()
+    const { notificar } = useNotificador()
     return {
-      store
+      store,
+      notificar
     }
   }
 });
